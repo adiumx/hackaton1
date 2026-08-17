@@ -1,4 +1,5 @@
 const contenedor = document.getElementById("productos");
+const botones = document.querySelectorAll(".filter-btn");
 
 if (!contenedor) {
   console.error("No se encontró el contenedor #productos en el HTML.");
@@ -61,7 +62,7 @@ if (!contenedor) {
     body.className = "card-body";
 
     const categoria = document.createElement("small");
-    categoria.textContent = producto.categoria;
+    categoria.textContent = producto.categoria || "Colección";
 
     const titulo = document.createElement("h3");
     titulo.textContent = producto.nombre;
@@ -71,7 +72,7 @@ if (!contenedor) {
     precio.textContent = producto.precio;
 
     const enlace = document.createElement("a");
-    // enlace.href = producto.url;
+    enlace.href = producto.url || "#";
     enlace.textContent = "Ver producto";
     enlace.target = "_blank";
     enlace.rel = "noopener noreferrer";
@@ -81,44 +82,56 @@ if (!contenedor) {
     return card;
   }
 
-  fetch("data/nike_hombre_calzado.csv")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("No se pudo cargar el archivo CSV.");
-      }
-      return response.text();
-    })
-    .then((csv) => {
-      const filas = parseCSV(csv);
-      if (filas.length < 2) {
-        throw new Error("El CSV no tiene datos válidos.");
-      }
+  function renderProductos(csvPath) {
+    contenedor.innerHTML = "";
 
-      const cabeceras = filas[0].map((columna) => columna.trim());
-      const productos = filas.slice(1).map((fila) => {
-        const producto = {};
-        cabeceras.forEach((cabecera, indice) => {
-          producto[cabecera] = (fila[indice] || "").trim();
+    fetch(csvPath)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("No se pudo cargar el archivo CSV.");
+        }
+        return response.text();
+      })
+      .then((csv) => {
+        const filas = parseCSV(csv);
+        if (filas.length < 2) {
+          throw new Error("El CSV no tiene datos válidos.");
+        }
+
+        const cabeceras = filas[0].map((columna) => columna.trim());
+        const productos = filas.slice(1).map((fila) => {
+          const producto = {};
+          cabeceras.forEach((cabecera, indice) => {
+            producto[cabecera] = (fila[indice] || "").trim();
+          });
+          return producto;
         });
-        return producto;
-      });
 
-      const registrosValidos = productos.filter(
-        (producto) => producto.nombre && producto.url && producto.imagen
-      );
+        const registrosValidos = productos.filter(
+          (producto) => producto.nombre && producto.imagen
+        );
 
-      contenedor.innerHTML = "";
-      registrosValidos.forEach((producto) => {
-        contenedor.appendChild(crearCard(producto));
+        registrosValidos.forEach((producto) => {
+          contenedor.appendChild(crearCard(producto));
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        contenedor.innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            No se pudo cargar el catálogo desde CSV.
+          </div>
+        `;
       });
-    })
-    .catch((error) => {
-      console.error(error);
-      contenedor.innerHTML = `
-        <div class="alert alert-danger" role="alert">
-          No se pudo cargar el catálogo desde CSV. Abre la página desde un servidor local, por ejemplo:
-          <code>python -m http.server 8000</code> y luego visita <code>http://localhost:8000</code>.
-        </div>
-      `;
+  }
+
+  botones.forEach((boton) => {
+    boton.addEventListener("click", () => {
+      botones.forEach((btn) => btn.classList.remove("active"));
+      boton.classList.add("active");
+      renderProductos(boton.dataset.file);
     });
+  });
+
+  renderProductos("data/nike_hombre_calzado.csv");
 }

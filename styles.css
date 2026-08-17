@@ -797,6 +797,33 @@ footer small {
     }
 }
 
+.catalog-filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px auto 30px;
+}
+
+.filter-btn {
+    border: 1px solid #10110f;
+    background: transparent;
+    color: #10110f;
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #10110f;
+    color: #fff;
+}
+
 
 /* catalogo de productos */
 #productos.grid {
