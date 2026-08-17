@@ -71,7 +71,7 @@ if (!contenedor) {
     precio.textContent = producto.precio;
 
     const enlace = document.createElement("a");
-    enlace.href = producto.url;
+    // enlace.href = producto.url;
     enlace.textContent = "Ver producto";
     enlace.target = "_blank";
     enlace.rel = "noopener noreferrer";
