@@ -19,7 +19,14 @@
 <!-- hero -->
 
 <!-- catalogo -->
- <h1>Catálogo de Productos</h1>
+<h1>Catálogo de Productos</h1>
+
+<div class="catalog-filters" aria-label="Selecciona una categoría">
+  <button class="filter-btn active" data-file="data/nike_hombre_calzado.csv" type="button">Hombres</button>
+  <button class="filter-btn" data-file="data/nike_productos_futbol.csv" type="button">Fútbol</button>
+  <button class="filter-btn" data-file="data/nike_ropa_niños.csv" type="button">Ropa niños</button>
+</div>
+
 <div id="productos" class="grid"></div>
 
 <script src="script.js" defer></script>
