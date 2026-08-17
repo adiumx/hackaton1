@@ -1,1 +1,1 @@
-//cargar los elementos al catalogo
+console.log("hola");
