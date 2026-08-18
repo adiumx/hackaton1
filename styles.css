@@ -1,4 +1,4 @@
- .dicfa-footer {
+.dicfa-footer {
     background-color: #1a1a1a;
     font-family: "Courier New", Courier, monospace;
     padding: 40px;
@@ -55,7 +55,8 @@
   }
 
   /* =========================
-   REDES SOCIALES
+     REDES SOCIALES
+     ========================= */
 
 .dicfa-footer .footer-social {
   margin-top: 40px;
@@ -96,6 +97,7 @@
 
 /* =========================
    COPYRIGHT
+   ========================= */
 
 .dicfa-footer .footer-bottom {
   margin-top: 35px;
@@ -110,7 +112,7 @@
   margin: 0;
 }
 
-/*Fijar el footer*/
+/* Fijar el footer */
 html,
 body {
     height: 100%;
@@ -565,6 +567,30 @@ ul {
     #productos.grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .dicfa-footer {
+        padding: 30px 20px;
+    }
+
+    .dicfa-footer .footer {
+        gap: 30px;
+    }
+}
+
+/* ==================================
+   CELULARES GRANDES / HORIZONTAL
+   ================================== */
+
+@media (max-width: 767.98px) {
+    .navbar .d-flex.mx-auto {
+        order: 3;
+        margin: 10px 0 0 !important;
+    }
+
+    #productos.grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
 }
 
 /* ==================================
@@ -635,6 +661,31 @@ ul {
 
     #productos.grid {
         grid-template-columns: 1fr;
+    }
+
+    .dicfa-footer {
+        padding: 25px 18px;
+    }
+
+    .dicfa-footer .footer {
+        flex-direction: column;
+        gap: 26px;
+    }
+
+    .dicfa-footer .footer-brand p {
+        max-width: 100%;
+    }
+
+    .dicfa-footer .social-icons {
+        gap: 18px;
+    }
+
+    .dicfa-footer .social-icons a {
+        font-size: 24px;
+    }
+
+    .navbar .d-flex.mx-auto {
+        max-width: 100% !important;
     }
 }
 
