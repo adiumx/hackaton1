@@ -2,33 +2,311 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Tienda Deportiva</title>
 
-  <!-- Bootstrap -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="styles.css">
+    <title>Tienda Deportiva</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Tipografía Barlow Condensed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-<!-- hero -->
+    <main>
 
-<!-- catalogo -->
-<h1>Catálogo de Productos</h1>
+        <!-- HERO -->
+        <section class="container-fluid hero">
+            <div class="row g-0">
 
-<div class="catalog-filters" aria-label="Selecciona una categoría">
+                <!-- Columna izquierda -->
+                <div class="col-12 col-lg-4 hero-content">
+                    <div class="hero-navigation">
+
+                        <!-- Frase -->
+                        <div class="hero-message">
+                            <p>DICFA</p>
+
+                            <h1>
+                                COMODIDAD<br>
+                                PARA TODO TIPO<br>
+                                DE DEPORTE.
+                            </h1>
+                        </div>
+
+                        <!-- Categorías -->
+                        <nav aria-label="Categorías de productos">
+                            <ul class="category-menu">
+
+                                <!-- Ofertas -->
+                                <li class="category-item">
+                                    <a class="category-link" href="#">
+                                        Ofertas
+                                    </a>
+                                </li>
+
+                                <!-- Marcas -->
+                                <li class="category-item has-submenu">
+                                    <a class="category-link" href="#">
+                                        <span class="category-name">
+                                            Marcas
+                                        </span>
+
+                                        <span
+                                            class="category-arrow"
+                                            aria-hidden="true"
+                                        >
+                                            ↗
+                                        </span>
+                                    </a>
+
+                                    <ul class="submenu">
+                                        <li><a href="#">Nike</a></li>
+                                        <li><a href="#">Adidas</a></li>
+                                        <li><a href="#">Puma</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Deportes -->
+                                <li class="category-item has-submenu">
+                                    <a class="category-link" href="#">
+                                        <span class="category-name">
+                                            Deportes
+                                        </span>
+
+                                        <span
+                                            class="category-arrow"
+                                            aria-hidden="true"
+                                        >
+                                            ↗
+                                        </span>
+                                    </a>
+
+                                    <ul class="submenu">
+                                        <li><a href="#">Fútbol</a></li>
+                                        <li><a href="#">Running</a></li>
+                                        <li><a href="#">Fitness</a></li>
+                                        <li><a href="#">Basquetbol</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Niña -->
+                                <li class="category-item has-submenu">
+                                    <a class="category-link" href="#">
+                                        <span class="category-name">
+                                            Niña
+                                        </span>
+
+                                        <span
+                                            class="category-arrow"
+                                            aria-hidden="true"
+                                        >
+                                            ↗
+                                        </span>
+                                    </a>
+
+                                    <ul class="submenu">
+                                        <li><a href="#">Calzado</a></li>
+                                        <li><a href="#">Ropa</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Niño -->
+                                <li class="category-item has-submenu">
+                                    <a class="category-link" href="#">
+                                        <span class="category-name">
+                                            Niño
+                                        </span>
+
+                                        <span
+                                            class="category-arrow"
+                                            aria-hidden="true"
+                                        >
+                                            ↗
+                                        </span>
+                                    </a>
+
+                                    <ul class="submenu">
+                                        <li><a href="#">Calzado</a></li>
+                                        <li><a href="#">Ropa</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Mujer -->
+                                <li class="category-item has-submenu">
+                                    <a class="category-link" href="#">
+                                        <span class="category-name">
+                                            Mujer
+                                        </span>
+
+                                        <span
+                                            class="category-arrow"
+                                            aria-hidden="true"
+                                        >
+                                            ↗
+                                        </span>
+                                    </a>
+
+                                    <ul class="submenu">
+                                        <li><a href="#">Calzado</a></li>
+                                        <li><a href="#">Ropa</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Hombre -->
+                                <li class="category-item has-submenu">
+                                    <a class="category-link" href="#">
+                                        <span class="category-name">
+                                            Hombre
+                                        </span>
+
+                                        <span
+                                            class="category-arrow"
+                                            aria-hidden="true"
+                                        >
+                                            ↗
+                                        </span>
+                                    </a>
+
+                                    <ul class="submenu">
+                                        <li><a href="#">Calzado</a></li>
+                                        <li><a href="#">Ropa</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="col-12 col-lg-8 hero-image">
+
+                    <!-- Carrusel -->
+                    <div
+                        id="heroCarousel"
+                        class="carousel slide carousel-fade"
+                        data-bs-ride="carousel"
+                        data-bs-interval="4000"
+                        data-bs-pause="false"
+                        data-bs-wrap="true"
+                    >
+                        <div class="carousel-inner">
+
+                            <!-- Imagen 1 -->
+                            <div class="carousel-item active">
+                                <img
+                                    src="imagenesHero/hombreConRaquetaEnLaEspalda.jpg"
+                                    class="d-block w-100"
+                                    alt="Hombre con una raqueta"
+                                >
+                            </div>
+
+                            <!-- Imagen 2 -->
+                            <div class="carousel-item">
+                                <img
+                                    src="imagenesHero/img1.jpg"
+                                    class="d-block w-100"
+                                    alt="Producto deportivo"
+                                >
+                            </div>
+
+                            <!-- Imagen 3 -->
+                            <div class="carousel-item">
+                                <img
+                                    src="imagenesHero/jugandoTenis.jpg"
+                                    class="d-block w-100"
+                                    alt="Persona jugando tenis"
+                                >
+                            </div>
+
+                            <!-- Imagen 4 -->
+                            <div class="carousel-item">
+                                <img
+                                    src="imagenesHero/raquetaTenis.jpg"
+                                    class="d-block w-100"
+                                    alt="Raqueta de tenis"
+                                >
+                            </div>
+
+                            <!-- Imagen 5 -->
+                            <div class="carousel-item">
+                                <img
+                                    src="imagenesHero/raquetaTenisMano.jpg"
+                                    class="d-block w-100"
+                                    alt="Persona sosteniendo una raqueta"
+                                >
+                            </div>
+
+                            <!-- Imagen 6 -->
+                            <div class="carousel-item">
+                                <img
+                                    src="imagenesHero/tenisLeon.jpg"
+                                    class="d-block w-100"
+                                    alt="Tenis deportivos"
+                                >
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Fin de la columna derecha -->
+
+            </div>
+            <!-- Fin de row -->
+
+        </section>
+        <!-- Fin del hero -->
+
+        <!-- CATÁLOGO -->
+        <section class="catalog-section">
+            <h2>Catálogo de Productos</h2>
+
+           <div class="catalog-filters" aria-label="Selecciona una categoría">
   <button class="filter-btn active" data-file="data/nike_hombre_calzado.csv" type="button">Hombres</button>
   <button class="filter-btn" data-file="data/nike_productos_futbol.csv" type="button">Fútbol</button>
   <button class="filter-btn" data-file="data/nike_ropa_niños.csv" type="button">Ropa niños</button>
 </div>
 
-<div id="productos" class="grid"></div>
 
-<script src="script.js" defer></script>
+
+            <div id="productos" class="grid"></div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript de Bootstrap -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+
+
+    <!-- JavaScript propio -->
+    <script src="script.js"></script>
 </body>
 </html>
