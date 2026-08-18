@@ -56,7 +56,6 @@
 
   /* =========================
    REDES SOCIALES
-========================= */
 
 .dicfa-footer .footer-social {
   margin-top: 40px;
@@ -97,7 +96,6 @@
 
 /* =========================
    COPYRIGHT
-========================= */
 
 .dicfa-footer .footer-bottom {
   margin-top: 35px;
@@ -127,4 +125,529 @@ body {
 
 .dicfa-footer {
     margin-top: auto;
+}
+/* ==================================
+   CONFIGURACIÓN GENERAL
+   ================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background-color: #e5e5e2;
+    font-family: "Barlow Condensed", Arial, sans-serif;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ==================================
+   CONTENEDOR DEL HERO
+   ================================== */
+
+.hero {
+    display: block !important;
+
+    width: min(100% - 60px, 1200px);
+    min-height: 0;
+    margin: 40px auto;
+    padding: 8px;
+
+    background: #efefed;
+}
+
+/* Mantiene las columnas una al lado de la otra */
+.hero > .row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+
+    min-height: 500px;
+    margin: 0;
+}
+
+/* ==================================
+   COLUMNA IZQUIERDA
+   ================================== */
+
+.hero > .row > .hero-content {
+    position: relative;
+    z-index: 10;
+
+    flex: 0 0 33.333333% !important;
+
+    width: 33.333333% !important;
+    max-width: 33.333333% !important;
+    min-height: 500px;
+    padding: 35px 42px;
+
+    background: #efefed;
+}
+
+/* Coloca la frase y categorías abajo a la izquierda */
+.hero-navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+
+    width: 100%;
+    height: 100%;
+}
+
+/* ==================================
+   FRASE
+   ================================== */
+
+.hero-message {
+    margin-bottom: 24px;
+}
+
+.hero-message p {
+    margin: 0 0 8px;
+
+    color: #555;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.hero-message h1 {
+    margin: 0;
+
+    color: #242424;
+    font-size: clamp(2.3rem, 3.5vw, 3.7rem);
+    font-style: italic;
+    font-weight: 600;
+    line-height: 0.88;
+    letter-spacing: -1px;
+}
+
+/* ==================================
+   MENÚ DE CATEGORÍAS
+   ================================== */
+
+.category-menu {
+    width: 230px;
+}
+
+.category-item {
+    position: relative;
+    min-height: 28px;
+}
+
+.category-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 5px 8px;
+
+    color: #202020;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    border-bottom: 1px solid #dadada;
+
+    transition:
+        color 0.25s ease,
+        background-color 0.25s ease,
+        font-size 0.25s ease,
+        padding 0.25s ease;
+}
+
+.category-name {
+    font-size: inherit;
+}
+
+.category-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.25s ease;
+}
+
+/* Categoría seleccionada */
+.category-item:hover > .category-link,
+.category-item:focus-within > .category-link {
+    padding: 7px 10px;
+
+    color: #fff;
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 600;
+
+    background: #222;
+}
+
+.category-item:hover > .category-link .category-arrow,
+.category-item:focus-within > .category-link .category-arrow {
+    transform: rotate(45deg);
+}
+
+/* ==================================
+   SUBMENÚS
+   ================================== */
+
+.submenu {
+    position: absolute;
+    z-index: 30;
+    left: calc(100% + 12px);
+    bottom: 0;
+
+    display: block;
+    width: 155px;
+    padding: 6px;
+
+    visibility: hidden;
+    opacity: 0;
+
+    background: rgba(24, 24, 24, 0.96);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+
+    transform: translateX(-10px);
+    pointer-events: none;
+
+    transition:
+        visibility 0.25s ease,
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+/* Puente invisible entre categoría y submenú */
+.submenu::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    right: 100%;
+
+    width: 14px;
+    height: 100%;
+}
+
+.submenu a {
+    display: block;
+    padding: 8px 10px;
+
+    color: #eee;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        padding-left 0.2s ease;
+}
+
+.submenu li:last-child a {
+    border-bottom: 0;
+}
+
+.submenu a:hover,
+.submenu a:focus-visible {
+    padding-left: 16px;
+
+    color: #151515;
+    background: #fff;
+    outline: none;
+}
+
+/* Abre el submenú */
+.has-submenu:hover > .submenu,
+.has-submenu:focus-within > .submenu {
+    visibility: visible;
+    opacity: 1;
+
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+/* ==================================
+   COLUMNA DERECHA
+   ================================== */
+
+.hero > .row > .hero-image {
+    position: relative;
+    z-index: 1;
+
+    flex: 0 0 66.666667% !important;
+
+    width: 66.666667% !important;
+    max-width: 66.666667% !important;
+    min-height: 500px;
+    padding: 0;
+    overflow: hidden;
+
+    background: #222;
+}
+
+/* ==================================
+   DEGRADADO
+   ================================== */
+
+.hero-image::before {
+    content: "";
+
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    display: block;
+    width: 28%;
+
+    background: linear-gradient(
+        to right,
+        #efefed 0%,
+        rgba(239, 239, 237, 0.95) 15%,
+        rgba(239, 239, 237, 0.7) 40%,
+        rgba(239, 239, 237, 0.25) 72%,
+        transparent 100%
+    );
+
+    pointer-events: none;
+}
+
+/* ==================================
+   CARRUSEL
+   ================================== */
+
+.hero-image .carousel {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.hero-image .carousel-inner,
+.hero-image .carousel-item {
+    width: 100%;
+    height: 100%;
+}
+
+.hero-image .carousel-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-image .carousel-fade .carousel-item {
+    transition: opacity 0.8s ease-in-out;
+}
+
+/* ==================================
+   CATÁLOGO
+   ================================== */
+
+.catalog-section {
+    width: min(100% - 60px, 1200px);
+    margin: 40px auto;
+}
+
+.catalog-section h2 {
+    margin: 0 0 25px;
+
+    color: #242424;
+    font-size: 2.5rem;
+    font-style: italic;
+    text-align: center;
+}
+
+.catalog-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 12px;
+    margin: 20px auto 30px;
+}
+
+.filter-btn {
+    padding: 10px 18px;
+
+    color: #10110f;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    background: transparent;
+    border: 1px solid #10110f;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    color: #fff;
+    background: #10110f;
+}
+
+#productos.grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+/* ==================================
+   TABLETAS
+   ================================== */
+
+@media (max-width: 991.98px) {
+    .hero {
+        width: min(100% - 30px, 750px);
+        margin: 20px auto;
+    }
+
+    .hero > .row {
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+
+        min-height: auto;
+    }
+
+    .hero > .row > .hero-content,
+    .hero > .row > .hero-image {
+        flex: 0 0 100% !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .hero > .row > .hero-content {
+        min-height: 510px;
+        padding: 35px 30px;
+    }
+
+    .hero > .row > .hero-image {
+        min-height: 400px;
+    }
+
+    .hero-image::before {
+        display: none;
+    }
+
+    #productos.grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ==================================
+   CELULARES
+   ================================== */
+
+@media (max-width: 575.98px) {
+    .hero {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .hero > .row > .hero-content {
+        min-height: 520px;
+        padding: 30px 22px;
+    }
+
+    .hero-message h1 {
+        font-size: 2.8rem;
+    }
+
+    .category-menu {
+        width: 100%;
+    }
+
+    /* Submenú debajo de la categoría en celulares */
+    .submenu {
+        position: static;
+
+        width: 100%;
+        max-height: 0;
+        padding: 0;
+
+        visibility: hidden;
+        overflow: hidden;
+        opacity: 0;
+
+        box-shadow: none;
+
+        transform: none;
+        pointer-events: none;
+
+        transition:
+            max-height 0.3s ease,
+            padding 0.3s ease,
+            opacity 0.3s ease;
+    }
+
+    .has-submenu:hover > .submenu,
+    .has-submenu:focus-within > .submenu {
+        max-height: 220px;
+        padding: 6px;
+
+        visibility: visible;
+        opacity: 1;
+
+        pointer-events: auto;
+    }
+
+    .hero > .row > .hero-image {
+        min-height: 320px;
+    }
+
+    .catalog-section {
+        width: calc(100% - 30px);
+    }
+
+    #productos.grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================================
+   ACCESIBILIDAD
+   ================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
 }
