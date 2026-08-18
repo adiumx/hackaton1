@@ -1,3 +1,131 @@
+ .dicfa-footer {
+    background-color: #1a1a1a;
+    font-family: "Courier New", Courier, monospace;
+    padding: 40px;
+  }
+ 
+  .dicfa-footer .footer {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+ 
+  .dicfa-footer .footer-brand h2 {
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0 0 8px 0;
+  }
+ 
+  .dicfa-footer .footer-brand p {
+    color: #cccccc;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 220px;
+  }
+ 
+  .dicfa-footer .footer-col h3 {
+    color: #ffffff;
+    font-weight: normal;
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ffffff;
+    display: inline-block;
+  }
+ 
+  .dicfa-footer .footer-col ul {
+    list-style: none;
+    margin: 16px 0 0 0;
+    padding: 0;
+  }
+ 
+  .dicfa-footer .footer-col li {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+ 
+  .dicfa-footer .footer-col a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+ 
+  .dicfa-footer .footer-col a:hover {
+    text-decoration: underline;
+  }
+
+  /* =========================
+   REDES SOCIALES
+
+.dicfa-footer .footer-social {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #444444;
+}
+
+.dicfa-footer .footer-social h3 {
+  color: #ffffff;
+  font-weight: normal;
+  font-size: 18px;
+  margin: 0 0 20px 0;
+}
+
+/* Contenedor de iconos */
+
+.dicfa-footer .social-icons {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Iconos */
+
+.dicfa-footer .social-icons a {
+  color: #ffffff;
+  font-size: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+
+.dicfa-footer .social-icons a:hover {
+  color: #cccccc;
+  transform: translateY(-4px);
+}
+
+/* =========================
+   COPYRIGHT
+
+.dicfa-footer .footer-bottom {
+  margin-top: 35px;
+  padding-top: 20px;
+  border-top: 1px solid #444444;
+  text-align: center;
+}
+
+.dicfa-footer .footer-bottom p {
+  color: #888888;
+  font-size: 13px;
+  margin: 0;
+}
+
+/*Fijar el footer*/
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.dicfa-footer {
+    margin-top: auto;
+}
 /* ==================================
    CONFIGURACIÓN GENERAL
    ================================== */
