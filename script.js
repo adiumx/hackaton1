@@ -186,7 +186,9 @@ function crearCard(producto) {
     );
     return card;
 }
+let solicitudCatalogo = 0;
 function renderProductos(csvPath) {
+    const solicitud = ++solicitudCatalogo;
     if (!contenedor) {
         console.error(
             "No se encontró el contenedor #productos."
@@ -204,6 +206,7 @@ function renderProductos(csvPath) {
             return response.text();
         })
         .then((csv) => {
+            if (solicitud !== solicitudCatalogo) return;
             const filas =
                 parseCSV(csv);
             if (filas.length < 2) {
@@ -264,14 +267,14 @@ function renderProductos(csvPath) {
             );
         })
         .catch((error) => {
+            if (solicitud !== solicitudCatalogo) return;
             console.error(error);
             contenedor.innerHTML = `
                 <div
                     class="alert alert-danger"
                     role="alert"
                 >
-                    No se pudo cargar el catálogo
-                    desde CSV.
+                    No se pudo cargar el catálogo desde CSV. Verifica la carpeta data y abre el proyecto mediante un servidor web.
                 </div>
             `;
         });
@@ -305,7 +308,7 @@ botones.forEach((boton) => {
 });
 function esMovil() {
     return window.matchMedia(
-        "(max-width: 575.98px)"
+        "(max-width: 991.98px)"
     ).matches;
 }
 function esEscritorio() {
@@ -351,10 +354,10 @@ categoriasConSubmenu.forEach(
         enlace.addEventListener(
             "click",
             (event) => {
+                event.preventDefault();
                 if (!esMovil()) {
                     return;
                 }
-                event.preventDefault();
                 usuarioTocoMenu = true;
                 const estabaAbierto =
                     categoria.classList.contains(
@@ -377,10 +380,9 @@ categoriasConSubmenu.forEach(
                         "aria-expanded",
                         "true"
                     );
-                    enlace.scrollIntoView({
+                    menuCategorias.scrollTo({
+                        left: menuCategorias.scrollLeft + enlace.getBoundingClientRect().left - menuCategorias.getBoundingClientRect().left - (menuCategorias.clientWidth - enlace.offsetWidth) / 2,
                         behavior: "smooth",
-                        block: "nearest",
-                        inline: "center"
                     });
                 }
             }
@@ -390,41 +392,40 @@ categoriasConSubmenu.forEach(
 // Conservamos el mismo menú y sus eventos al cambiar de posición.
 const heroCategorySlot = document.getElementById("hero-category-slot");
 const navigationAnchor = document.getElementById("navigation-anchor");
+const searchHeader = document.getElementById("search-header");
 
+let estadoNavegacion = "";
 function actualizarNavegacion() {
     if (!navegacion || !hero || !heroCategorySlot || !navigationAnchor) return;
-    if (esEscritorio()) {
-        navegacion.classList.remove("is-sticky");
-        cartButton?.classList.remove("mobile-nav-active");
-        cartButton?.style.removeProperty("--cart-bottom");
-        const sticky = hero.getBoundingClientRect().bottom <= 0;
-        if (sticky) {
-            if (navegacion.parentElement === heroCategorySlot) {
-                heroCategorySlot.style.height = navegacion.offsetHeight + "px";
-            }
-            navegacion.classList.add("desktop-sticky");
-            if (navegacion.parentElement !== document.body) document.body.append(navegacion);
-        } else {
-            navegacion.classList.remove("desktop-sticky");
-            if (navegacion.parentElement !== heroCategorySlot) heroCategorySlot.append(navegacion);
-            heroCategorySlot.style.height = "";
+    const headerHeight = searchHeader.offsetHeight;
+    const alto = headerHeight + "px";
+    if (document.documentElement.style.getPropertyValue("--search-height") !== alto) {
+        document.documentElement.style.setProperty("--search-height", alto);
+    }
+    const escritorio = esEscritorio();
+    const limite = escritorio ? hero.getBoundingClientRect().bottom : navigationAnchor.getBoundingClientRect().top;
+    const fijo = limite <= headerHeight;
+    const nuevoEstado = (escritorio ? "desktop" : "mobile") + (fijo ? "-fixed" : "-hero");
+    if (nuevoEstado === estadoNavegacion) return;
+
+    // Cambiamos de lugar el menú solo al cruzar el límite del hero.
+    if (escritorio) {
+        navigationAnchor.style.height = "";
+        if (fijo && navegacion.parentElement === heroCategorySlot) {
+            heroCategorySlot.style.height = navegacion.offsetHeight + "px";
         }
-        return;
-    }
-    navegacion.classList.remove("desktop-sticky");
-    heroCategorySlot.style.height = "";
-    if (navigationAnchor.nextElementSibling !== navegacion) navigationAnchor.after(navegacion);
-    const navRect = navegacion.getBoundingClientRect();
-    const sticky = esMovil() && navRect.top <= 1;
-    navegacion.classList.toggle("is-sticky", sticky);
-    cartButton?.classList.toggle("mobile-nav-active", sticky);
-    if (esMovil() && !sticky) {
-        const bottom = Math.max(18, window.innerHeight - navRect.top + 16);
-        cartButton?.style.setProperty("--cart-bottom", bottom + "px");
+        if (!fijo) heroCategorySlot.style.height = "";
     } else {
-        cartButton?.style.removeProperty("--cart-bottom");
+        heroCategorySlot.style.height = "";
+        navigationAnchor.style.height = fijo ? "58px" : "";
     }
-    if (sticky) mostrarPistaMenuMovil();
+    navegacion.classList.toggle("desktop-sticky", escritorio && fijo);
+    navegacion.classList.toggle("is-sticky", !escritorio && fijo);
+    if (fijo) document.body.append(navegacion);
+    else if (escritorio) heroCategorySlot.append(navegacion);
+    else navigationAnchor.after(navegacion);
+    estadoNavegacion = nuevoEstado;
+    if (!escritorio && fijo) mostrarPistaMenuMovil();
 }
 
 function mostrarPistaMenuMovil() {
@@ -534,9 +535,8 @@ function cargarCarrito() {
             localStorage.getItem(
                 "dicfa-carrito"
             );
-        return guardado
-            ? JSON.parse(guardado)
-            : [];
+        const datos = guardado ? JSON.parse(guardado) : [];
+        return Array.isArray(datos) ? datos.filter(item => item && typeof item.id === "string" && Number.isFinite(item.cantidad) && item.cantidad > 0 && Number.isFinite(item.precioNumero)) : [];
     } catch (error) {
         console.error(
             "No se pudo cargar el carrito.",
@@ -546,10 +546,8 @@ function cargarCarrito() {
     }
 }
 function guardarCarrito() {
-    localStorage.setItem(
-        "dicfa-carrito",
-        JSON.stringify(carrito)
-    );
+    try { localStorage.setItem("dicfa-carrito", JSON.stringify(carrito)); }
+    catch (error) { console.error("No se pudo guardar el carrito.", error); }
 }
 function crearIdProducto(producto) {
     return (
@@ -855,6 +853,8 @@ function abrirCarrito() {
     ) {
         return;
     }
+    cartPanel.inert = false;
+    cartButton?.setAttribute("aria-expanded", "true");
     cartPanel.classList.add(
         "open"
     );
@@ -876,6 +876,10 @@ function cerrarCarrito() {
     ) {
         return;
     }
+    const estabaAbierto = cartPanel.classList.contains("open");
+    cartPanel.inert = true;
+    cartButton?.setAttribute("aria-expanded", "false");
+    if (estabaAbierto) cartButton?.focus({preventScroll:true});
     cartPanel.classList.remove(
         "open"
     );
@@ -956,3 +960,26 @@ if (contenedor) {
 }
 
 window.addEventListener("load", actualizarNavegacion);
+
+// Búsqueda dentro de la categoría actual.
+const searchInput = document.getElementById("product-search");
+const searchStatus = document.getElementById("search-status");
+function filtrarBusqueda() {
+    const normalizar = texto => texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const consulta = normalizar(searchInput.value.trim());
+    let visibles = 0;
+    contenedor.querySelectorAll(".card").forEach(card => {
+        card.hidden = !normalizar(card.querySelector("h3").textContent + " " + card.querySelector("small").textContent).includes(consulta);
+        if (!card.hidden) visibles++;
+    });
+    searchStatus.hidden = !consulta;
+    searchStatus.textContent = visibles + " productos encontrados en esta categoría.";
+}
+document.getElementById("header-search").addEventListener("submit", event => {
+    event.preventDefault();
+    filtrarBusqueda();
+    document.getElementById("catalogo").scrollIntoView({behavior:"smooth", block:"start"});
+});
+searchInput.addEventListener("input", filtrarBusqueda);
+new MutationObserver(filtrarBusqueda).observe(contenedor, {childList:true});
+new ResizeObserver(actualizarNavegacion).observe(searchHeader);
