@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
     <title>DICFA Sport</title>
     <link
@@ -28,7 +28,7 @@
         <a class="header-brand" href="#" aria-label="DICFA Sport, inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10h18l-2-6H5z M5 10v11h14V10 M9 21v-7h6v7"/></svg><span>DICFA Sport</span></a>
         <form id="header-search" class="search-form" role="search">
             <label for="product-search" class="search-label">Buscar productos</label>
-            <input id="product-search" type="search" placeholder="Buscar productos..." aria-label="Buscar en la categoría actual">
+            <input id="product-search" type="search" placeholder="Buscar en esta categoría..." aria-label="Buscar en la categoría actual">
             <button type="submit">Buscar</button>
         </form>
         <nav class="header-actions" aria-label="Cuenta y carrito">
@@ -39,7 +39,7 @@
     </header>
     <main>
         <!-- Hero -->
-        <section class="container-fluid hero">
+        <section class="container-fluid hero" id="inicio">
             <div class="row g-0">
                 <div class="col-12 col-lg-4 hero-content">
                     <div class="hero-navigation">
@@ -62,7 +62,7 @@
                         class="category-link"
                         href="#catalogo"
                     >
-                        Ofertas
+                        Catálogo
                     </a>
                 </li>
                 <li class="category-item has-submenu">
@@ -83,19 +83,15 @@
                     </a>
                     <ul class="submenu">
                         <li>
-                            <a href="#catalogo">
+                            <a href="#catalogo" class="catalog-filter" data-file="data/nike_hombre_calzado.csv">
                                 Nike
                             </a>
                         </li>
                         <li>
-                            <a href="#catalogo">
-                                Adidas
-                            </a>
+                            <span class="submenu-pending">Adidas · Próximamente</span>
                         </li>
                         <li>
-                            <a href="#catalogo">
-                                Puma
-                            </a>
+                            <span class="submenu-pending">Puma · Próximamente</span>
                         </li>
                     </ul>
                 </li>
@@ -201,9 +197,7 @@
                     </a>
                     <ul class="submenu">
                         <li>
-                            <a href="#catalogo">
-                                Próximamente
-                            </a>
+                            <span class="submenu-pending">Próximamente</span>
                         </li>
                     </ul>
                 </li>
@@ -307,6 +301,8 @@
             class="catalog-section"
         >
             <h2>Catálogo de Productos</h2>
+            <p id="catalog-category" class="demo-caption" role="status">Viendo: Hombre · Calzado</p>
+            <p class="demo-caption">Proyecto de hackatón · Catálogo y compra de demostración. No se procesan pagos.</p>
 <p id="search-status" role="status" hidden></p>
             <div
                 id="productos"
@@ -314,6 +310,25 @@
             ></div>
         </section>
     </main>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div>
+                <p class="footer-brand">DICFA SPORT</p>
+                <p>Diseño, deporte y comodidad en una experiencia de tienda de demostración.</p>
+            </div>
+            <nav aria-label="Navegación del pie de página">
+                <h2>Explora el proyecto</h2>
+                <a href="#inicio">Inicio</a>
+                <a href="#catalogo">Catálogo</a>
+                <button id="footer-cart" type="button">Ver carrito</button>
+            </nav>
+            <div>
+                <h2>Acerca de esta demo</h2>
+                <p>Proyecto de hackatón. Puedes consultar productos, probar el carrito y simular un pedido. No se realizan cobros ni envíos.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">DICFA Sport · Proyecto académico. Marcas e imágenes pertenecen a sus respectivos propietarios.</div>
+    </footer>
     <!-- Fondo del carrito -->
     <div
         id="cart-overlay"
@@ -324,6 +339,7 @@
         id="cart-panel"
         class="cart-panel" inert
         aria-hidden="true"
+        role="dialog" aria-modal="true" aria-label="Carrito de demostración"
     >
         <div class="cart-header">
             <div>
@@ -353,14 +369,14 @@
                 </strong>
             </div>
             <p class="cart-note">
-                Los gastos de envío se calculan al finalizar la compra.
+                Carrito de demostración. No se realizan cobros ni envíos.
             </p>
             <button
                 id="checkout-button"
                 class="checkout-button"
                 type="button"
             >
-                Finalizar compra
+                Ver resumen de prueba
             </button>
             <button
                 id="clear-cart"
@@ -371,9 +387,39 @@
             </button>
         </div>
     </aside>
+    <dialog id="product-dialog" class="demo-dialog" aria-labelledby="product-dialog-title">
+        <div class="demo-dialog-header">
+            <p class="cart-eyebrow">DICFA Sport · Vista del producto</p>
+            <button type="button" class="cart-close" data-close-dialog aria-label="Cerrar producto">×</button>
+        </div>
+        <div class="product-detail">
+            <img id="product-detail-image" alt="">
+            <div>
+                <p id="product-detail-category" class="demo-caption"></p>
+                <h2 id="product-dialog-title"></h2>
+                <p id="product-detail-price" class="detail-price"></p>
+                <p>Producto de ejemplo para explorar el catálogo y probar el carrito. El precio y la disponibilidad son ilustrativos.</p>
+                <button type="button" id="product-detail-add" class="checkout-button">Agregar al carrito</button>
+                <p id="product-detail-status" class="demo-caption" role="status"></p>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="checkout-dialog" class="demo-dialog" aria-labelledby="checkout-dialog-title">
+        <div class="demo-dialog-header">
+            <p class="cart-eyebrow">DICFA Sport · Demostración</p>
+            <button type="button" class="cart-close" data-close-dialog aria-label="Cerrar resumen">×</button>
+        </div>
+        <h2 id="checkout-dialog-title">Resumen de tu pedido de prueba</h2>
+        <p>Así se vería el paso previo a una compra. No solicitamos datos personales ni bancarios y no se realizan cobros ni envíos.</p>
+        <ul id="demo-order-items" class="demo-order-items"></ul>
+        <p class="cart-total"><span>Total ilustrativo</span><strong id="demo-order-total"></strong></p>
+        <button type="button" id="simulate-order" class="checkout-button">Simular confirmación</button>
+        <p id="demo-order-status" class="demo-confirmation" role="status" tabindex="-1" hidden></p>
+    </dialog>
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     ></script>
+    <script src="data/catalogos.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

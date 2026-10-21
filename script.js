@@ -113,12 +113,8 @@ function crearCard(producto) {
     const body =
         document.createElement("div");
     body.className = "card-body";
-    const categoria =
-        document.createElement("small");
-    categoria.textContent =
-        producto.categoria ||
-        producto.etiqueta ||
-        "Colección";
+    // Conserva los términos de búsqueda sin mostrar la descripción en la tarjeta.
+    card.dataset.search = `${producto.nombre} ${producto.categoria || producto.etiqueta || ""}`;
     const titulo =
         document.createElement("h3");
     titulo.textContent =
@@ -133,17 +129,13 @@ function crearCard(producto) {
     acciones.className =
         "product-actions";
     const enlace =
-        document.createElement("a");
-    enlace.href =
-        producto.url || "#";
+        document.createElement("button");
+    enlace.type = "button";
     enlace.textContent =
         "Ver producto";
     enlace.className =
         "product-link";
-    enlace.target =
-        "_blank";
-    enlace.rel =
-        "noopener noreferrer";
+    enlace.addEventListener("click", () => mostrarProducto(producto));
     const agregar =
         document.createElement("button");
     agregar.type =
@@ -175,7 +167,6 @@ function crearCard(producto) {
         agregar
     );
     body.append(
-        categoria,
         titulo,
         precio,
         acciones
@@ -187,6 +178,19 @@ function crearCard(producto) {
     return card;
 }
 let solicitudCatalogo = 0;
+async function cargarCatalogo(csvPath) {
+    const copiaLocal = window.DICFA_CATALOGOS?.[csvPath];
+    // Los navegadores bloquean fetch al abrir un HTML directamente desde la carpeta.
+    if (window.location.protocol === "file:" && copiaLocal !== undefined) return copiaLocal;
+    try {
+        const respuesta = await fetch(csvPath);
+        if (!respuesta.ok) throw new Error("No se pudo cargar el catálogo.");
+        return await respuesta.text();
+    } catch (error) {
+        if (copiaLocal !== undefined) return copiaLocal;
+        throw error;
+    }
+}
 function renderProductos(csvPath) {
     const solicitud = ++solicitudCatalogo;
     if (!contenedor) {
@@ -196,15 +200,7 @@ function renderProductos(csvPath) {
         return;
     }
     contenedor.innerHTML = "";
-    fetch(csvPath)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(
-                    "No se pudo cargar el archivo CSV."
-                );
-            }
-            return response.text();
-        })
+    cargarCatalogo(csvPath)
         .then((csv) => {
             if (solicitud !== solicitudCatalogo) return;
             const filas =
@@ -274,7 +270,7 @@ function renderProductos(csvPath) {
                     class="alert alert-danger"
                     role="alert"
                 >
-                    No se pudo cargar el catálogo desde CSV. Verifica la carpeta data y abre el proyecto mediante un servidor web.
+                    No pudimos mostrar esta categoría. Intenta volver a seleccionarla.
                 </div>
             `;
         });
@@ -290,6 +286,8 @@ botones.forEach((boton) => {
                 return;
             }
             renderProductos(archivo);
+            const categoria = boton.closest(".category-item")?.querySelector(".category-name")?.textContent.trim();
+            document.getElementById("catalog-category").textContent = `Viendo: ${categoria ? categoria + " · " : ""}${boton.textContent.trim()}`;
             cerrarSubmenus();
             const catalogo =
                 document.getElementById(
@@ -868,6 +866,7 @@ function abrirCarrito() {
     document.body.classList.add(
         "cart-open"
     );
+    cartClose.focus({ preventScroll: true });
 }
 function cerrarCarrito() {
     if (
@@ -934,9 +933,7 @@ if (checkoutButton) {
             ) {
                 return;
             }
-            alert(
-                "La pasarela de pago todavía no está implementada."
-            );
+            mostrarResumenDemo();
         }
     );
 }
@@ -969,7 +966,7 @@ function filtrarBusqueda() {
     const consulta = normalizar(searchInput.value.trim());
     let visibles = 0;
     contenedor.querySelectorAll(".card").forEach(card => {
-        card.hidden = !normalizar(card.querySelector("h3").textContent + " " + card.querySelector("small").textContent).includes(consulta);
+        card.hidden = !normalizar(card.dataset.search || card.querySelector("h3").textContent).includes(consulta);
         if (!card.hidden) visibles++;
     });
     searchStatus.hidden = !consulta;
@@ -983,3 +980,72 @@ document.getElementById("header-search").addEventListener("submit", event => {
 searchInput.addEventListener("input", filtrarBusqueda);
 new MutationObserver(filtrarBusqueda).observe(contenedor, {childList:true});
 new ResizeObserver(actualizarNavegacion).observe(searchHeader);
+
+// Recorridos de demostración: todo permanece dentro del sitio.
+const productDialog = document.getElementById("product-dialog");
+const checkoutDialog = document.getElementById("checkout-dialog");
+let productoEnVista = null;
+
+function mostrarProducto(producto) {
+    productoEnVista = producto;
+    const imagen = document.getElementById("product-detail-image");
+    imagen.src = producto.imagen;
+    imagen.alt = producto.nombre;
+    document.getElementById("product-dialog-title").textContent = producto.nombre;
+    document.getElementById("product-detail-category").textContent = producto.categoria || producto.etiqueta || "Colección";
+    document.getElementById("product-detail-price").textContent = producto.precio;
+    document.getElementById("product-detail-status").textContent = "";
+    productDialog.showModal();
+}
+
+document.getElementById("product-detail-add").addEventListener("click", () => {
+    if (!productoEnVista) return;
+    agregarAlCarrito(productoEnVista);
+    document.getElementById("product-detail-status").textContent = "Producto agregado. Puedes seguir explorando o abrir tu carrito.";
+});
+
+function mostrarResumenDemo() {
+    const lista = document.getElementById("demo-order-items");
+    lista.replaceChildren();
+    carrito.forEach(producto => {
+        const fila = document.createElement("li");
+        const nombre = document.createElement("span");
+        const importe = document.createElement("strong");
+        nombre.textContent = `${producto.nombre} × ${producto.cantidad}`;
+        importe.textContent = formatoMoneda(producto.precioNumero * producto.cantidad);
+        fila.append(nombre, importe);
+        lista.append(fila);
+    });
+    document.getElementById("demo-order-total").textContent = formatoMoneda(obtenerSubtotal());
+    document.getElementById("demo-order-status").hidden = true;
+    document.getElementById("simulate-order").disabled = false;
+    cerrarCarrito();
+    checkoutDialog.showModal();
+}
+
+document.getElementById("simulate-order").addEventListener("click", event => {
+    event.currentTarget.disabled = true;
+    const estado = document.getElementById("demo-order-status");
+    estado.textContent = "¡Simulación completada! Este es un pedido ficticio: no se guardó ni se envió a ninguna tienda. Tu carrito sigue disponible para continuar probando.";
+    estado.hidden = false;
+    estado.focus();
+});
+
+document.querySelectorAll("[data-close-dialog]").forEach(boton => {
+    boton.addEventListener("click", () => boton.closest("dialog").close());
+});
+checkoutDialog.addEventListener("close", () => cartButton.focus({ preventScroll: true }));
+document.getElementById("footer-cart").addEventListener("click", abrirCarrito);
+
+// Evita que el teclado salga del panel del carrito mientras está abierto.
+document.addEventListener("keydown", event => {
+    if (event.key !== "Tab" || !cartPanel.classList.contains("open")) return;
+    const controles = [...cartPanel.querySelectorAll("button:not(:disabled), a[href], input:not(:disabled), [tabindex='0']")];
+    const primero = controles[0];
+    const ultimo = controles[controles.length - 1];
+    if (event.shiftKey && document.activeElement === primero) {
+        event.preventDefault(); ultimo.focus();
+    } else if (!event.shiftKey && document.activeElement === ultimo) {
+        event.preventDefault(); primero.focus();
+    }
+});

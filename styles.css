@@ -1,3 +1,35 @@
+/* Vistas de demostración, manteniendo la identidad del catálogo. */
+html:has(dialog[open]) { overflow: hidden; }
+.demo-caption { color: #555; font-size: 1rem; line-height: 1.5; text-align: center; }
+.site-footer { margin-top: 60px; padding: 42px max(20px, calc((100% - 1200px) / 2)) 0; background: #202020; color: #eee; }
+.footer-content { display: grid; grid-template-columns: 1.2fr .8fr 1fr; gap: 36px; padding-bottom: 32px; }
+.footer-content > * { min-width: 0; }
+.footer-brand { margin: 0 0 12px; font-size: 1.8rem; font-weight: 700; }
+.footer-content h2 { margin: 0 0 14px; font-size: 1.15rem; }
+.footer-content p { max-width: 360px; color: #ccc; line-height: 1.6; }
+.footer-content nav { display: flex; flex-direction: column; align-items: flex-start; }
+.footer-content a, .footer-content button { padding: 10px 0; border: 0; background: none; color: #eee; text-decoration: none; font: inherit; cursor: pointer; }
+.footer-content a:hover, .footer-content button:hover { text-decoration: underline; }
+.footer-bottom { padding: 22px 0; border-top: 1px solid #555; color: #bbb; font-size: .9rem; }
+@media (max-width: 767.98px) { .footer-content { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+.submenu-pending { display: block; padding: 12px 16px; color: #777; font-size: .95rem; white-space: nowrap; }
+.demo-dialog { width: min(760px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: clamp(18px, 4vw, 32px); border: 1px solid #ccc; background: #f4f4f1; color: #242424; overflow-y: auto; overscroll-behavior: contain; }
+.demo-dialog::backdrop { background: rgb(0 0 0 / 55%); backdrop-filter: blur(3px); }
+.demo-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.demo-dialog-header .cart-close { flex-shrink: 0; width: 44px; height: 44px; }
+.demo-dialog h2 { font-size: clamp(1.5rem, 5vw, 2rem); overflow-wrap: anywhere; }
+.demo-dialog p { line-height: 1.5; }
+.product-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; }
+.product-detail img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #ececea; }
+.product-detail .demo-caption { text-align: left; }
+.detail-price { font-size: 1.6rem; font-weight: 700; }
+.demo-order-items { margin: 24px 0; }
+.demo-order-items li { display: flex; justify-content: space-between; gap: 20px; padding: 12px 0; border-bottom: 1px solid #ccc; }
+.demo-order-items span { min-width: 0; overflow-wrap: anywhere; }
+.demo-order-items strong { white-space: nowrap; }
+.demo-confirmation { padding: 16px; margin-top: 18px; border-left: 3px solid #435a43; background: #e3eae0; }
+button:focus-visible, a:focus-visible { outline: 3px solid #377491; outline-offset: 3px; }
+@media (max-width: 575.98px) { .product-detail { grid-template-columns: minmax(0, 1fr); gap: 18px; } .product-detail img { max-height: 220px; } }
 * {
     box-sizing: border-box;
 }
@@ -1603,3 +1635,31 @@ body { padding-top: var(--search-height); overflow-anchor: none; }
 }
 .cart-panel { visibility: hidden; pointer-events: none; }
 .cart-panel.open { visibility: visible; pointer-events: auto; }
+
+/* La primera pantalla móvil incluye la búsqueda, el hero y las categorías. */
+@media (max-width: 575.98px) {
+    .hero {
+        height: calc(100svh - var(--search-height) - 58px - env(safe-area-inset-bottom, 0px));
+    }
+    .hero-navigation { gap: 0; }
+    .hero-message { padding: 0 22px 32px; }
+    .category-navigation {
+        height: calc(58px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .category-navigation.is-sticky { height: 58px; padding-bottom: 0; }
+    .category-navigation:not(.is-sticky) .submenu {
+        bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+/* Dos productos por fila, con acciones apiladas para conservar su tamaño táctil. */
+@media (max-width: 767.98px) {
+    #productos.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    #productos .card-body { min-width: 0; padding: 12px; }
+    #productos .card-body small { font-size: .65rem; letter-spacing: .5px; overflow-wrap: anywhere; }
+    #productos .card-body h3 { font-size: 1.1rem; line-height: 1.15; overflow-wrap: anywhere; }
+    #productos .card-body .precio { font-size: 1.05rem; margin-bottom: 12px; }
+    #productos .product-actions { flex-direction: column; gap: 6px; }
+    #productos .product-link, #productos .add-cart { flex: auto; width: 100%; min-height: 44px; padding: 8px 6px; font-size: .75rem; letter-spacing: .3px; }
+}
